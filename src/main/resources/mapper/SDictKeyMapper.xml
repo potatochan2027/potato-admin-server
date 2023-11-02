@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.potato.commonpro.dao.SDictKeyDao">
+    <select id="list" resultType="SDictKey">
+        select *
+        from s_dict_key
+        where dict_id = #{dictId}
+    </select>
+
+    <select id="get" resultType="SDictKey">
+        select dk.id, dk.key_name, dk.key_value, dk.dict_id
+        from s_dict_key dk,
+             s_dict d
+        where d.name = #{dictName} and d.id=dk.dict_id
+    </select>
+
+    <insert id="add">
+        insert into s_dict_key(dict_id, key_name, key_value)
+        values (#{dictId}, #{keyName}, #{keyValue})
+    </insert>
+
+    <update id="modify">
+        update s_dict_key set
+        <if test="dictId!=null and dictId!=''">
+            dict_id =#{dictId}
+        </if>
+        <if test="keyName!=null and keyName!=''">
+            ,key_name =#{keyName}
+        </if>
+        <if test="keyValue!=null and keyValue!=''">
+            ,key_value =#{keyValue}
+        </if>
+        where id=#{id}
+    </update>
+
+    <delete id="del">
+        delete
+        from s_dict_key
+        where id = #{id}
+    </delete>
+
+
+</mapper>
+
+
+

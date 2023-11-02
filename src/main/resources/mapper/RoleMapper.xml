@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.potato.commonpro.dao.RoleDao">
+    <select id="list" resultType="Role">
+        select * from role
+        <trim prefix="where" suffixOverrides="and|or">
+            <if test="id!=0 and id!=null ">
+                id=#{id} and
+            </if>
+            <if test="name!=null and name!=''">
+                name like "%"#{name}"%" and
+            </if>
+            <if test="status!=0  and status!=null ">
+                status=#{status} and
+            </if>
+            <if test="remark!=null and remark!=''">
+                remark like "%"#{remark}"%" and
+            </if>
+            <if test="mark!=null and mark!=''">
+                mark like "%"#{mark}"%" and
+            </if>
+        </trim>
+        order by id desc
+        <if test="pageSize!=null and pageSize!=0 and currentPage!=null and currentPage!=0">
+            limit #{currentIndex} ,#{pageSize}
+        </if>
+
+    </select>
+
+    <select id="count" resultType="int">
+        select count(*) from role
+        <trim prefix="where" suffixOverrides="and|or">
+            <if test="id!=0 and id!=null ">
+                id=#{id} and
+            </if>
+            <if test="name!=null and name!=''">
+                name like "%"#{name}"%" and
+            </if>
+            <if test="status!=0  and status!=null">
+                status=#{status} and
+            </if>
+            <if test="remark!=null and remark!=''">
+                remark like "%"#{remark}"%" and
+            </if>
+            <if test="mark!=null and mark!=''">
+                mark like "%"#{mark}"%" and
+            </if>
+        </trim>
+
+    </select>
+
+    <select id="listByUId" resultType="Role">
+        select * from role r,s_user_role sr where r.id=sr.rid and sr.suid=#{id}
+    </select>
+
+    <insert id="add">
+        insert into role(name,remark,status,mark)
+        values(
+               #{name},#{remark},#{status},#{mark})
+    </insert>
+
+    <insert id="bind">
+        insert into s_user_role(suid,rid)
+        values(
+                  #{suid},#{rid})
+    </insert>
+
+    <select id="listUserRole" resultType="UserRole">
+        select * from s_user_role where suid=#{suid}
+    </select>
+
+
+    <update id="modify">
+        update role set
+        <if test="name!=null and name!=''">
+            name =#{name}
+        </if>
+        <if test="remark!=null and remark!=''">
+            ,remark =#{remark}
+        </if>
+        <if test="status!='' and status!=null">
+            ,status =#{status}
+        </if>
+        <if test="mark!=null and mark!=''">
+            ,mark =#{mark}
+        </if>
+        where id=#{id}
+    </update>
+
+    <delete id="del">
+        delete from role where id = #{id}
+    </delete>
+
+    <delete id="delBind">
+        delete from s_user_role where id = #{id}
+    </delete>
+
+
+</mapper>
+
+
+

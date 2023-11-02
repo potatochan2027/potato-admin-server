@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.potato.commonpro.dao.RoleRouterDao">
+    <select id="list" resultType="RoleRouter">
+        select * from role_router where rid=#{roleId}
+
+    </select>
+
+
+<!--    根据菜单id 获取 该菜单绑定的所有角色-->
+    <select id="listByRouterId" resultType="String">
+        select role.mark from role_router rr,role where rr.router_id=#{routerId} and rr.rid=role.id
+    </select>
+
+
+
+
+
+    <insert id="add">
+        insert into role_router(rid,router_id)
+        values(
+               #{roleId},#{routerId})
+    </insert>
+
+
+    <delete id="del">
+        delete from role_router where id = #{id}
+    </delete>
+
+
+</mapper>
+
+
+

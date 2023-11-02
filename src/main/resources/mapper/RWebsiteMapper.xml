@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.potato.commonpro.dao.RWebsiteDao">
+    <select id="list" resultType="RWebsite">
+        select * from r_website
+        <trim prefix="where" suffixOverrides="and|or">
+            <if test="id!=0 and id!=null ">
+                id=#{id} and
+            </if>
+            <if test="crawlerType!='' and crawlerType!=null ">
+                crawler_type=#{crawlerType} and
+            </if>
+            <if test="remark!=null and remark!=''">
+                remark like "%"#{remark}"%" and
+            </if>
+        </trim>
+        order by id desc
+        <if test="pageSize!=null and pageSize!=0 and currentPage!=null and currentPage!=0">
+            limit #{currentIndex} ,#{pageSize}
+        </if>
+
+    </select>
+
+    <select id="count" resultType="int">
+        select count(*) from r_website
+        <trim prefix="where" suffixOverrides="and|or">
+            <if test="id!=0 and id!=null ">
+                id=#{id} and
+            </if>
+
+            <if test="remark!=null and remark!=''">
+                remark like "%"#{remark}"%" and
+            </if>
+        </trim>
+
+    </select>
+
+    <insert id="add">
+        insert into r_website(url,remark,crawler_type)
+        values(
+               #{url},#{remark},#{crawlerType})
+    </insert>
+
+    <update id="modify">
+        update r_website set
+        <if test="url!=null and url!=''">
+            url =#{url}
+        </if>
+        <if test="remark!=null and remark!=''">
+            ,remark =#{remark}
+        </if>
+        <if test="crawlerType!=null and crawlerType!=''">
+            ,crawler_type =#{crawlerType}
+        </if>
+        where id=#{id}
+    </update>
+
+    <delete id="del">
+        delete from r_website where id = #{id}
+    </delete>
+
+
+
+</mapper>
+
+
+

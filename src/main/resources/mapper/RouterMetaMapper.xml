@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.potato.commonpro.dao.RouterMetaDao">
+    <select id="list" resultType="RouterMeta">
+        select * from router_meta
+        <trim prefix="where" suffixOverrides="and|or">
+            <if test="id!=0 and id!=null ">
+                id=#{id} and
+            </if>
+            <if test="title!=null and title!=''">
+                title like "%"#{title}"%" and
+            </if>
+            <if test="icon!=null and icon!=''">
+                icon like "%"#{icon}"%" and
+            </if>
+            <if test="sort!=0 and sort!=null ">
+                sort=#{sort} and
+            </if>
+        </trim>
+        order by id desc
+    </select>
+
+    <select id="getById" resultType="RouterMeta">
+        select * from router_meta where id=#{id}
+    </select>
+
+    <insert id="add">
+        insert into router_meta(title,icon,sort)
+        values(#{title},#{icon},#{sort} )
+    </insert>
+
+    <update id="modify">
+        update router_meta set
+        <if test="title!=null and title!=''">
+            title =#{title}
+        </if>
+        <if test="icon!=null and icon!=''">
+            ,icon =#{icon}
+        </if>
+        <if test="sort!=0">
+            ,sort =#{sort}
+        </if>
+        where id=#{id}
+    </update>
+
+
+    <delete id="del">
+        delete from router_meta where id = #{id}
+    </delete>
+
+    <delete id="delById">
+        delete from router_meta where id = #{id}
+    </delete>
+
+</mapper>
+
+
+

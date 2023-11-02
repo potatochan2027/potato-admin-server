@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.potato.commonpro.dao.SDictDao">
+    <select id="list" resultType="SDict">
+        select * from s_dict
+        <trim prefix="where" suffixOverrides="and|or">
+            <if test="id!=0 and id!=null ">
+                id=#{id} and
+            </if>
+            <if test="name!=null and name!=''">
+                name like "%"#{name}"%" and
+            </if>
+            <if test="remark!=null and remark!=''">
+                remark like "%"#{remark}"%" and
+            </if>
+        </trim>
+        order by id desc
+        <if test="pageSize!=null and pageSize!=0 and currentPage!=null and currentPage!=0">
+            limit #{currentIndex} ,#{pageSize}
+        </if>
+
+    </select>
+
+    <select id="count" resultType="int">
+        select count(*) from s_dict
+        <trim prefix="where" suffixOverrides="and|or">
+            <if test="id!=0 and id!=null ">
+                id=#{id} and
+            </if>
+            <if test="name!=null and name!=''">
+                name like "%"#{name}"%" and
+            </if>
+            <if test="remark!=null and remark!=''">
+                remark like "%"#{remark}"%" and
+            </if>
+        </trim>
+
+    </select>
+
+
+
+    <insert id="add">
+        insert into s_dict(name,remark)
+        values(
+               #{name},#{remark})
+    </insert>
+
+    <update id="modify">
+        update s_dict set
+        <if test="name!=null and name!=''">
+            name =#{name}
+        </if>
+        <if test="remark!=null and remark!=''">
+            ,remark =#{remark}
+        </if>
+        where id=#{id}
+    </update>
+
+    <delete id="del">
+        delete from s_dict where id = #{id}
+    </delete>
+
+
+
+</mapper>
+
+
+

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.potato.commonpro.dao.SUserDao">
+
+    <select id="list" resultType="SUser">
+        select * from s_user
+        <trim prefix="where" suffixOverrides="and|or">
+            <if test="id!=0 and id!=null ">
+                id=#{id} and
+            </if>
+            <if test="username!=null and username!=''">
+                username like "%"#{username}"%" and
+            </if>
+            <if test="deptId!=null and deptId!=''">
+                dept_id=#{deptId} and
+            </if>
+        </trim>
+        order by id desc
+        <if test="pageSize!=null and pageSize!=0 and currentPage!=null and currentPage!=0">
+            limit #{currentIndex} ,#{pageSize}
+        </if>
+    </select>
+
+
+    <select id="count" resultType="int">
+        select count(*) from s_user
+        <trim prefix="where" suffixOverrides="and|or">
+            <if test="id!=0 and id!=null ">
+                id=#{id} and
+            </if>
+            <if test="username!=null and username!=''">
+                username like "%"#{username}"%" and
+            </if>
+            <if test="deptId!=null and deptId!=''">
+                dept_id=#{deptId} and
+            </if>
+        </trim>
+    </select>
+
+    <select id="getByUsername" resultType="SUser">
+        select * from s_user where username=#{username}
+    </select>
+
+    <select id="getByRefreshToken" resultType="SUser">
+        select * from s_user where refresh_token=#{refreshToken}
+    </select>
+
+    <insert id="add">
+        insert into s_user(username,password,dept_id)
+        values(#{username},#{password},#{deptId})
+    </insert>
+
+    <update id="modify">
+        update s_user set
+        <if test="username!=null and username!=''">
+            username =#{username}
+        </if>
+        <if test="password!=null and password!=''">
+            ,password =#{password}
+        </if>
+        <if test="accessToken!=null and accessToken!=''">
+            ,access_token =#{accessToken}
+        </if>
+        <if test="refreshToken!=null and refreshToken!=''">
+            ,refresh_token =#{refreshToken} ,expires =#{expires}
+        </if>
+        <if test="deptId!=null and deptId!=''">
+            ,dept_id =#{deptId}
+        </if>
+        where id = #{id}
+    </update>
+
+    <delete id="del">
+        delete from s_user where id = #{id}
+    </delete>
+
+
+</mapper>
+
+
+
